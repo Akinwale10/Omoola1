@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omoola Admin Login & Users</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <h2>Omoola Admin</h2>
+            <ul class="admin-menu">
+                <li><a href="omoola-db.html"><span>📊</span> Dashboard</a></li>
+                <li><a href="omoola-lg.html" class="active"><span>👤</span> Users</a></li>
+                <li><a href="../index.html"><span>🏠</span> Back to Store</a></li>
+                <li><a href="#" onclick="handleLogout()"><span>🔚</span> Logout</a></li>
+            </ul>
+        </aside>
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1>Admin Login & Users Management</h1>
+                <div id="loginSection">
+                    <!-- Firebase Auth Login Form -->
+                    <form id="adminLoginForm">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="adminEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" id="adminPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+                <div id="userSection" style="display:none;">
+                    <input type="text" class="form-control" placeholder="Search users..." id="searchUsers" style="width: 300px;">
+                    <div style="background: white; padding: 2rem; border-radius: var(--radius-lg); margin-top: 2rem;">
+                        <div class="data-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Joined Date</th>
+                                        <th>Orders</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTable">
+                                    <!-- Users will be loaded here by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 2rem;">
+                        <div class="stat-card"><div class="stat-value" id="totalUsers">0</div><div class="stat-label">Total Users</div></div>
+                        <div class="stat-card"><div class="stat-value" id="totalCustomers">0</div><div class="stat-label">Customers</div></div>
+                        <div class="stat-card"><div class="stat-value" id="totalAdmins">0</div><div class="stat-label">Administrators</div></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/firebase.js"></script>
+    <script src="../js/admin.js"></script>
+    <script src="../js/admin-lg.js"></script>
+</body>
+</html>
