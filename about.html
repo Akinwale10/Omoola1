@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About Omoola Pharmacy & Stores - Your trusted healthcare partner">
+    <title>About Us - Omoola Pharmacy & Stores</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 5C11.7157 5 5 11.7157 5 20C5 28.2843 11.7157 35 20 35C28.2843 35 35 28.2843 35 20C35 11.7157 28.2843 5 20 5Z" fill="#2c5f8d"/>
+                    <path d="M20 10C15.0294 10 11 14.0294 11 19V25C11 26.1046 11.8954 27 13 27H27C28.1046 27 29 26.1046 29 25V19C29 14.0294 24.9706 10 20 10Z" fill="white"/>
+                    <circle cx="20" cy="20" r="3" fill="#00a896"/>
+                </svg>
+                Omoola
+            </a>
+            
+            <div class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="index.html#categories">Categories</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html" class="navbar-cart">
+                    <svg class="navbar-cart-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 2C9 1.44772 9.44772 1 10 1H14C14.5523 1 15 1.44772 15 2V3H19C19.5523 3 20 3.44772 20 4V6C20 6.55228 19.5523 7 19 7H5C4.44772 7 4 6.55228 4 6V4C4 3.44772 4.44772 3 5 3H9V2Z" fill="currentColor"/>
+                        <path d="M5 9H19L18 21C18 21.5523 17.5523 22 17 22H7C6.44772 22 6 21.5523 6 21L5 9Z" fill="currentColor"/>
+                    </svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a></li>
+                <li><a href="admin/index.html" class="admin-link" id="adminLink" style="display: none;">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- About Header -->
+    <section class="section" style="background: linear-gradient(135deg, #2c5f8d, #00a896); color: white; padding: 60px 0;">
+        <div class="container text-center">
+            <h1 style="color: white;">About Omoola Pharmacy & Stores</h1>
+            <p style="font-size: 1.2rem;">Your trusted healthcare partner since 2020</p>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="section">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-bottom: 3rem;">
+                <div>
+                    <h2>Our Story</h2>
+                    <p style="line-height: 1.8; color: var(--gray); margin-bottom: 1rem;">
+                        Founded in 2020, Omoola Pharmacy & Stores began with a simple mission: to make quality healthcare products accessible to everyone. We understand that health is wealth, and our commitment is to provide you with authentic medicines, health products, and essential groceries at affordable prices.
+                    </p>
+                    <p style="line-height: 1.8; color: var(--gray);">
+                        Over the years, we've grown from a small local pharmacy to a trusted online healthcare destination, serving thousands of satisfied customers across Nigeria. Our team of licensed pharmacists and healthcare professionals work tirelessly to ensure every product meets the highest quality standards.
+                    </p>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800" alt="Pharmacy" style="border-radius: var(--radius-lg); width: 100%;">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin: 3rem 0;">
+                <div style="text-align: center; padding: 2rem; background: var(--light-color); border-radius: var(--radius-lg);">
+                    <div style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;">🏥</div>
+                    <h3>Licensed & Certified</h3>
+                    <p style="color: var(--gray);">All our products are sourced from certified manufacturers and approved by regulatory authorities.</p>
+                </div>
+                <div style="text-align: center; padding: 2rem; background: var(--light-color); border-radius: var(--radius-lg);">
+                    <div style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 1rem;">🚚</div>
+                    <h3>Fast Delivery</h3>
+                    <p style="color: var(--gray);">We ensure your orders reach you quickly and safely, with careful packaging and tracking.</p>
+                </div>
+                <div style="text-align: center; padding: 2rem; background: var(--light-color); border-radius: var(--radius-lg);">
+                    <div style="font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem;">💊</div>
+                    <h3>Expert Support</h3>
+                    <p style="color: var(--gray);">Our licensed pharmacists are available to answer your questions and provide guidance.</p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #2c5f8d, #00a896); color: white; padding: 3rem; border-radius: var(--radius-lg); text-align: center;">
+                <h2 style="color: white; margin-bottom: 1rem;">Our Mission</h2>
+                <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto; line-height: 1.8;">
+                    To provide accessible, affordable, and authentic healthcare products to every Nigerian household, ensuring that quality healthcare is never out of reach.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About Omoola</h4>
+                    <p>Your trusted online pharmacy and grocery store. We deliver quality healthcare products and groceries right to your doorstep.</p>
+                    <p><strong>License No:</strong> PH-2024-001-NG</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="shop.html">Shop All Products</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#shipping">Shipping Information</a></li>
+                        <li><a href="#returns">Returns & Refunds</a></li>
+                        <li><a href="#track">Track Your Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>📞 +234 123 456 7890</p>
+                    <p>✉️ info@omoola.com</p>
+                    <p>📍 Lagos, Nigeria</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Omoola Pharmacy & Stores. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
