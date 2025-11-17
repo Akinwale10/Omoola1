@@ -1,38 +1,51 @@
 // Admin Dashboard JavaScript
 
-// Mobile Menu Toggle
-const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-const sidebar = document.querySelector('.admin-sidebar');
-const sidebarOverlay = document.querySelector('.sidebar-overlay');
+// Hamburger Dropdown Menu
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const hamburgerMenu = document.getElementById('hamburgerMenu');
 
-// Toggle mobile menu
-function toggleMobileMenu() {
-    mobileMenuToggle.classList.toggle('active');
-    sidebar.classList.toggle('active');
-    sidebarOverlay.classList.toggle('active');
-    document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+// Toggle dropdown menu
+function toggleHamburgerMenu(e) {
+    e.stopPropagation();
+    hamburgerMenu.classList.toggle('open');
 }
 
-if (mobileMenuToggle) {
-    mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-}
-
-if (sidebarOverlay) {
-    sidebarOverlay.addEventListener('click', toggleMobileMenu);
-}
-
-// Close mobile menu when clicking a nav item
-function closeMobileMenu() {
-    if (window.innerWidth < 768 && mobileMenuToggle && sidebar && sidebarOverlay) {
-        mobileMenuToggle.classList.remove('active');
-        sidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-        document.body.style.overflow = '';
+// Close dropdown menu
+function closeHamburgerMenu() {
+    if (hamburgerMenu.classList.contains('open')) {
+        hamburgerMenu.classList.remove('open');
     }
 }
 
-// Section Navigation
-const navItems = document.querySelectorAll('.nav-item[data-section]');
+// Handle hamburger button click
+if (hamburgerBtn) {
+    hamburgerBtn.addEventListener('click', toggleHamburgerMenu);
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!hamburgerMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+        closeHamburgerMenu();
+    }
+});
+
+// Close menu on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeHamburgerMenu();
+    }
+});
+
+// Close menu when clicking a dropdown item
+const dropdownItems = document.querySelectorAll('.dropdown-item');
+dropdownItems.forEach(item => {
+    item.addEventListener('click', () => {
+        closeHamburgerMenu();
+    });
+});
+
+// Section Navigation - Works for both dropdown and sidebar
+const navItems = document.querySelectorAll('.nav-item[data-section], .dropdown-item[data-section]');
 const sections = document.querySelectorAll('.admin-section');
 const pageTitle = document.getElementById('pageTitle');
 
@@ -56,30 +69,29 @@ navItems.forEach(item => {
         // Update page title
         const titleText = item.querySelector('span').textContent;
         pageTitle.textContent = titleText;
-        
-        // Close mobile menu after navigation
-        closeMobileMenu();
     });
 });
 
 // Logout functionality - clears admin session
-const logoutBtn = document.querySelector('.logout-btn');
-if (logoutBtn) {
-    logoutBtn.addEventListener('click', async () => {
-        if (confirm('Are you sure you want to logout?')) {
-            // Clear admin session
-            sessionStorage.removeItem('adminLoggedIn');
-            sessionStorage.removeItem('adminEmail');
-            sessionStorage.removeItem('adminUid');
-            
-            window.showNotification('Logged out successfully');
-            setTimeout(() => {
-                // Redirect to admin login page
-                window.location.href = 'admin-login.html';
-            }, 1000);
-        }
-    });
-}
+const logoutBtns = document.querySelectorAll('.logout-btn');
+logoutBtns.forEach(logoutBtn => {
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear admin session
+                sessionStorage.removeItem('adminLoggedIn');
+                sessionStorage.removeItem('adminEmail');
+                sessionStorage.removeItem('adminUid');
+                
+                window.showNotification('Logged out successfully');
+                setTimeout(() => {
+                    // Redirect to admin login page
+                    window.location.href = 'admin-login.html';
+                }, 1000);
+            }
+        });
+    }
+});
 
 // Product Upload Form Handler
 const productUploadForm = document.getElementById('productUploadForm');
