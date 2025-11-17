@@ -28,19 +28,160 @@ navItems.forEach(item => {
     });
 });
 
-// Logout functionality
+// Logout functionality - clears admin session
 const logoutBtn = document.querySelector('.logout-btn');
 if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
         if (confirm('Are you sure you want to logout?')) {
-            // In a real application, you would sign out from Firebase
+            // Clear admin session
+            sessionStorage.removeItem('adminLoggedIn');
+            sessionStorage.removeItem('adminEmail');
+            sessionStorage.removeItem('adminUid');
+            
             window.showNotification('Logged out successfully');
             setTimeout(() => {
-                window.location.href = 'index.html';
+                // Redirect to admin login page
+                window.location.href = 'admin-login.html';
             }, 1000);
         }
     });
 }
+
+// Product Upload Form Handler
+const productUploadForm = document.getElementById('productUploadForm');
+if (productUploadForm) {
+    productUploadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Get form values
+        const productName = document.getElementById('productName').value;
+        const productCategory = document.getElementById('productCategory').value;
+        const productDescription = document.getElementById('productDescription').value;
+        const productPrice = document.getElementById('productPrice').value;
+        const productStock = document.getElementById('productStock').value;
+        const productImageInput = document.getElementById('productImage');
+        
+        // Handle image upload (for now, use placeholder or convert to base64)
+        let imageUrl = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=50&h=50&fit=crop';
+        
+        if (productImageInput.files && productImageInput.files[0]) {
+            // In production, upload to Firebase Storage or Cloudinary
+            // For demo, use a placeholder based on category
+            if (productCategory === 'Medicine') {
+                imageUrl = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=50&h=50&fit=crop';
+            } else if (productCategory === 'Health Supplies') {
+                imageUrl = 'https://images.unsplash.com/photo-1550572017-4781e5e8e9c7?w=50&h=50&fit=crop';
+            } else if (productCategory === 'Groceries') {
+                imageUrl = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=50&h=50&fit=crop';
+            }
+        }
+        
+        // Create product object
+        const newProduct = {
+            id: Date.now(), // Simple ID generation for demo
+            name: productName,
+            category: productCategory,
+            description: productDescription,
+            price: parseFloat(productPrice).toFixed(2),
+            stock: parseInt(productStock),
+            imageUrl: imageUrl,
+            status: 'Active',
+            createdAt: new Date().toISOString()
+        };
+        
+        // Save to localStorage (in production, save to Firestore)
+        let products = JSON.parse(localStorage.getItem('adminProducts') || '[]');
+        products.push(newProduct);
+        localStorage.setItem('adminProducts', JSON.stringify(products));
+        
+        // Add product to table
+        addProductToTable(newProduct);
+        
+        // Show success message
+        const successMsg = document.getElementById('productUploadSuccess');
+        successMsg.style.display = 'block';
+        
+        // Reset form
+        productUploadForm.reset();
+        
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+            successMsg.style.display = 'none';
+        }, 3000);
+        
+        window.showNotification('Product added successfully!');
+    });
+}
+
+// Function to add product to table
+function addProductToTable(product) {
+    const tbody = document.getElementById('productsTableBody');
+    const row = document.createElement('tr');
+    
+    row.innerHTML = `
+        <td>
+            <div class="product-cell">
+                <img src="${product.imageUrl}" alt="${product.name}">
+                <span>${product.name}</span>
+            </div>
+        </td>
+        <td>${product.category}</td>
+        <td>£${product.price}</td>
+        <td>${product.stock}</td>
+        <td><span class="status-badge active">${product.status}</span></td>
+        <td>
+            <button class="action-btn edit-btn" data-id="${product.id}">Edit</button>
+            <button class="action-btn delete delete-btn" data-id="${product.id}">Delete</button>
+        </td>
+    `;
+    
+    tbody.appendChild(row);
+    
+    // Add event listeners for new buttons
+    attachProductActionListeners(row);
+}
+
+// Function to attach event listeners to product action buttons
+function attachProductActionListeners(row) {
+    const editBtn = row.querySelector('.edit-btn');
+    const deleteBtn = row.querySelector('.delete-btn');
+    
+    if (editBtn) {
+        editBtn.addEventListener('click', () => {
+            window.showNotification('Edit functionality coming soon!');
+        });
+    }
+    
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', () => {
+            const productId = deleteBtn.dataset.id;
+            if (confirm('Are you sure you want to delete this product?')) {
+                // Remove from localStorage
+                let products = JSON.parse(localStorage.getItem('adminProducts') || '[]');
+                products = products.filter(p => p.id !== parseInt(productId));
+                localStorage.setItem('adminProducts', JSON.stringify(products));
+                
+                // Remove row from table
+                row.remove();
+                
+                window.showNotification('Product deleted successfully!');
+            }
+        });
+    }
+}
+
+// Load existing products from localStorage on page load
+function loadProducts() {
+    const products = JSON.parse(localStorage.getItem('adminProducts') || '[]');
+    products.forEach(product => {
+        addProductToTable(product);
+    });
+}
+
+// Load products when page loads
+window.addEventListener('DOMContentLoaded', () => {
+    loadProducts();
+});
 
 // Simple chart for demo (you would use Chart.js in production)
 const salesChart = document.getElementById('salesChart');
@@ -120,8 +261,8 @@ filterSelects.forEach(select => {
     });
 });
 
-// Action button handlers (demo)
-document.querySelectorAll('.action-btn').forEach(btn => {
+// Action button handlers (demo) for existing buttons
+document.querySelectorAll('.action-btn:not(.edit-btn):not(.delete-btn)').forEach(btn => {
     btn.addEventListener('click', () => {
         const action = btn.textContent.trim();
         window.showNotification(`${action} functionality coming soon!`);

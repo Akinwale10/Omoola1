@@ -219,3 +219,17 @@
         gap: 10px;
     }
 }
+
+/* Admin Badge Styles */
+.admin-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.admin-badge svg {
+    width: 64px;
+    height: 64px;
+}
+
