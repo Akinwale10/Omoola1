@@ -1,8 +1,28 @@
 // Main JavaScript for Omoola Pharmacy & Stores
 
-// Cart Management
+/**
+ * Cart Management System
+ * 
+ * The cart is stored in localStorage with key 'omoola_cart'
+ * and exposed globally via window.cart for use by other scripts
+ * 
+ * Cart item structure:
+ * {
+ *   id: string/number - Unique product identifier
+ *   name: string - Product name
+ *   price: number - Product price
+ *   image: string - Product image URL
+ *   quantity: number - Number of items
+ * }
+ */
+
+// Initialize cart from localStorage or create empty array
 let cart = JSON.parse(localStorage.getItem('omoola_cart')) || [];
 
+/**
+ * Updates the cart count badge in the navigation header
+ * Shows total number of items (sum of all quantities)
+ */
 function updateCartCount() {
     const cartCount = document.querySelector('.cart-count');
     if (cartCount) {
@@ -11,6 +31,16 @@ function updateCartCount() {
     }
 }
 
+/**
+ * Adds a product to the shopping cart
+ * If product already exists, increases quantity by 1
+ * Otherwise, adds new item with quantity 1
+ * 
+ * @param {string|number} productId - Unique product identifier
+ * @param {string} productName - Display name of the product
+ * @param {number} price - Product price
+ * @param {string} image - URL to product image
+ */
 function addToCart(productId, productName, price, image) {
     const existingItem = cart.find(item => item.id === productId);
     
@@ -33,6 +63,12 @@ function addToCart(productId, productName, price, image) {
     showNotification('Product added to cart!');
 }
 
+/**
+ * Displays a temporary notification message to the user
+ * 
+ * @param {string} message - The message to display
+ * @param {string} type - Notification type: 'success' or 'error' (default: 'success')
+ */
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
@@ -58,12 +94,14 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
-// Add to Cart Button Handlers
+/**
+ * Initialize event listeners and components when DOM is ready
+ */
 document.addEventListener('DOMContentLoaded', () => {
     // Update cart count on page load
     updateCartCount();
     
-    // Add to cart buttons
+    // Attach click handlers to all "Add to Cart" buttons
     const addToCartButtons = document.querySelectorAll('.btn-add-cart');
     addToCartButtons.forEach(button => {
         button.addEventListener('click', (e) => {
@@ -78,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Mobile Menu Toggle
+    // Mobile menu toggle functionality
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
     
@@ -89,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Newsletter Form
+    // Newsletter form submission handler
     const newsletterForm = document.getElementById('newsletterForm');
     if (newsletterForm) {
         newsletterForm.addEventListener('submit', (e) => {
@@ -103,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Smooth Scroll for anchor links
+    // Smooth scrolling for internal anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
@@ -120,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Navbar scroll effect
+    // Navbar scroll effect - adds shadow when scrolling
     let lastScroll = 0;
     const navbar = document.querySelector('.navbar');
     
@@ -137,7 +175,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// CSS animations for notifications
+/**
+ * Inject CSS animations for notifications and mobile menu
+ */
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideIn {
@@ -197,7 +237,10 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Export functions for use in other files
+/**
+ * Export cart and utility functions to global scope
+ * for use by other scripts (e.g., cart.js, shop.js)
+ */
 window.cart = cart;
 window.addToCart = addToCart;
 window.updateCartCount = updateCartCount;

@@ -1,11 +1,32 @@
 // Cart Page JavaScript
 
-// Cart state is managed in main.js. We access it via window.cart.
-// The global window.cart is initialized in main.js
-// We use a local constant 'cart' for convenience, which points to window.cart
-const cart = window.cart;
+/**
+ * Cart functionality for cart.html page
+ * 
+ * This script handles:
+ * - Rendering cart items from localStorage
+ * - Updating item quantities (increase/decrease)
+ * - Removing items from cart
+ * - Calculating and displaying totals
+ * - Persisting cart state to localStorage
+ * 
+ * The cart data is stored in window.cart which is initialized in main.js
+ * and persisted to localStorage with key 'omoola_cart'
+ */
 
+// Wait for main.js to load and initialize window.cart
+// Access the cart array directly from window.cart (no redeclaration)
+function getCart() {
+    return window.cart || [];
+}
+
+/**
+ * Renders the cart items on the cart page
+ * Displays empty cart message if no items, otherwise shows all cart items
+ * with quantity controls, pricing, and order summary
+ */
 function renderCart() {
+    const cart = getCart();
     const cartLayout = document.getElementById('cartLayout');
     
     if (cart.length === 0) {
@@ -25,6 +46,7 @@ function renderCart() {
         return;
     }
     
+    // Calculate cart totals
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const shipping = subtotal > 50 ? 0 : 5.99;
     const total = subtotal + shipping;
@@ -78,10 +100,17 @@ function renderCart() {
     attachCartEventListeners();
 }
 
+/**
+ * Attaches event listeners to cart control buttons
+ * Handles quantity increase/decrease and item removal
+ */
 function attachCartEventListeners() {
+    const cart = getCart();
+    
     // Increase quantity
     document.querySelectorAll('.increase-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            const cart = getCart();
             const index = parseInt(e.target.dataset.index);
             cart[index].quantity += 1;
             saveAndRender();
@@ -91,6 +120,7 @@ function attachCartEventListeners() {
     // Decrease quantity
     document.querySelectorAll('.decrease-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            const cart = getCart();
             const index = parseInt(e.target.dataset.index);
             if (cart[index].quantity > 1) {
                 cart[index].quantity -= 1;
@@ -113,19 +143,34 @@ function attachCartEventListeners() {
     });
 }
 
+/**
+ * Removes an item from the cart by index
+ * @param {number} index - The index of the item to remove
+ */
 function removeItem(index) {
+    const cart = getCart();
     cart.splice(index, 1);
     saveAndRender();
     window.showNotification('Item removed from cart');
 }
 
+/**
+ * Saves cart to localStorage and re-renders the cart display
+ * Also updates the cart count badge in the header
+ */
 function saveAndRender() {
+    const cart = getCart();
     localStorage.setItem('omoola_cart', JSON.stringify(cart));
     window.updateCartCount();
     renderCart();
 }
 
+/**
+ * Handles checkout button click
+ * In production, this would redirect to a checkout page
+ */
 function proceedToCheckout() {
+    const cart = getCart();
     if (cart.length === 0) {
         window.showNotification('Your cart is empty', 'error');
         return;
@@ -136,13 +181,22 @@ function proceedToCheckout() {
     // window.location.href = 'checkout.html';
 }
 
-// Initial render
+/**
+ * Initialize cart rendering when DOM is ready
+ * Ensures window.cart is available before rendering
+ */
 document.addEventListener('DOMContentLoaded', () => {
     // Ensure window.cart is available before using it
-    if (window.cart) {
+    if (typeof window.cart !== 'undefined') {
         renderCart();
     } else {
-        // Fallback or wait for main.js to load, though main.js should load first
-        console.error("window.cart not found. main.js may not have loaded correctly.");
+        // Fallback: wait a bit for main.js to load
+        setTimeout(() => {
+            if (typeof window.cart !== 'undefined') {
+                renderCart();
+            } else {
+                console.error("window.cart not found. main.js may not have loaded correctly.");
+            }
+        }, 100);
     }
 });
