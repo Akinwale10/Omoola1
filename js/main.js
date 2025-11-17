@@ -1,4 +1,4 @@
-// Main JavaScript for Omolola Pharmacy & Stores
+// Main JavaScript for Omoola Pharmacy & Stores
 
 // Cart Management
 let cart = JSON.parse(localStorage.getItem('omoola_cart')) || [];

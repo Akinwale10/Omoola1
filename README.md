@@ -1,4 +1,4 @@
-# Omolola Pharmacy & Stores
+# Omoola Pharmacy & Stores
 
 A premium e-commerce website for medicines, groceries, and health products with elegant design inspired by professional service business aesthetics.
 
@@ -169,7 +169,7 @@ The site is fully responsive with breakpoints:
 
 ## 📝 License
 
-Copyright © 2024 Omolola Pharmacy & Stores. All rights reserved.
+Copyright © 2024 Omoola Pharmacy & Stores. All rights reserved.
 
 ## 👥 Contact
 

@@ -1,4 +1,4 @@
-# 🏥 Omolola Pharmacy & Stores - Project Overview
+# 🏥 Omoola Pharmacy & Stores - Project Overview
 
 ## Project Completion Summary
 
@@ -16,7 +16,7 @@
 
 **Features**:
 - Hero section with high-quality Unsplash background image
-- Headline: "Omolola Pharmacy & Stores"
+- Headline: "Omoola Pharmacy & Stores"
 - Subheading: "Trusted Medicines & Groceries Delivered with Care"
 - Call-to-action "Shop Now" button
 - 3 value proposition cards (Licensed Pharmacy, Fast Delivery, Secure Checkout)
@@ -311,5 +311,5 @@ The website is **production-ready** and can be deployed to:
 
 ---
 
-**Built with 💚 for Omolola Pharmacy & Stores**  
+**Built with 💚 for Omoola Pharmacy & Stores**  
 **Delivering Quality Healthcare with Digital Excellence**

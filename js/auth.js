@@ -97,7 +97,7 @@ if (registerForm) {
                 displayName: `${firstName} ${lastName}`
             });
             
-            window.showNotification('Registration successful! Welcome to Omolola Pharmacy.');
+            window.showNotification('Registration successful! Welcome to Omoola Pharmacy.');
             
             // Redirect to shop
             setTimeout(() => {
