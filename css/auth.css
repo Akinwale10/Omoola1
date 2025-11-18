@@ -4,7 +4,7 @@
     padding: 40px 0 80px;
     background: var(--background-lighter);
     min-height: calc(100vh - 70px);
-    margin-top: 70px;
+    margin-top: 1.5rem;
 }
 
 .auth-wrapper {
