@@ -1,7 +1,7 @@
 /* Shop Page Specific Styles */
 
 .shop-hero {
-    padding: 130px 0 60px;
+    padding: 40px 0 60px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: white;
     text-align: center;
@@ -252,7 +252,7 @@
 
 @media (max-width: 768px) {
     .shop-hero {
-        padding: 110px 0 50px;
+        padding: 40px 0 50px;
     }
     
     .shop-hero h1 {
