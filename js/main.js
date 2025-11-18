@@ -101,6 +101,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update cart count on page load
     updateCartCount();
     
+    // Brand name shine animation on click
+    const brandName = document.querySelector('.brand-name');
+    if (brandName) {
+        brandName.addEventListener('click', (e) => {
+            // Prevent navigation when clicking on the brand name
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Add animation class
+            brandName.classList.add('shine-active');
+            
+            // Remove class after animation completes (1 second)
+            setTimeout(() => {
+                brandName.classList.remove('shine-active');
+            }, 1000);
+        });
+    }
+    
     // Attach click handlers to all "Add to Cart" buttons
     const addToCartButtons = document.querySelectorAll('.btn-add-cart');
     addToCartButtons.forEach(button => {
