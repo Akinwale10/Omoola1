@@ -105,13 +105,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const brandName = document.querySelector('.brand-name');
     if (brandName) {
         brandName.addEventListener('click', (e) => {
+            // Remove class first to reset animation if it's already active
+            brandName.classList.remove('shine-active');
+            
+            // Force a reflow to restart the animation
+            void brandName.offsetWidth;
+            
             // Add animation class (allow navigation to proceed)
             brandName.classList.add('shine-active');
             
-            // Remove class after animation completes (1 second)
+            // Remove class after animation completes (2 seconds)
             setTimeout(() => {
                 brandName.classList.remove('shine-active');
-            }, 1000);
+            }, 2000);
         });
     }
     
