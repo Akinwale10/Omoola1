@@ -121,9 +121,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const navMenu = document.querySelector('.nav-menu');
     
     if (mobileMenuToggle && navMenu) {
-        mobileMenuToggle.addEventListener('click', () => {
+        mobileMenuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
             navMenu.classList.toggle('active');
             mobileMenuToggle.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const navbar = document.querySelector('.navbar');
+            if (navMenu.classList.contains('active') && 
+                !navbar.contains(e.target)) {
+                navMenu.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+            }
+        });
+        
+        // Close mobile menu when clicking on a nav link
+        const navLinks = navMenu.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+            });
         });
     }
     
@@ -204,14 +224,18 @@ style.textContent = `
     
     .nav-menu.active {
         display: flex;
-        position: fixed;
-        top: 70px;
-        left: 0;
+        position: absolute;
+        top: 100%;
         right: 0;
+        width: 280px;
+        max-width: calc(100vw - 40px);
         background: white;
         flex-direction: column;
-        padding: 30px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        border-radius: 8px;
+        margin-top: 10px;
+        z-index: 1000;
     }
     
     .nav-menu.active .nav-links {
