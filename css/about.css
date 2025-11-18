@@ -1,7 +1,7 @@
 /* About Page Specific Styles */
 
 .page-hero {
-    padding: 150px 0 80px;
+    padding: 40px 0 60px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: white;
     text-align: center;
