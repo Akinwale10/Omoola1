@@ -5,6 +5,8 @@ import {
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     updateProfile
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
@@ -121,13 +123,90 @@ if (registerForm) {
     });
 }
 
-// Google Sign In
+// Check for redirect result on page load
+getRedirectResult(auth)
+    .then((result) => {
+        if (result && result.user) {
+            window.showNotification(`Welcome, ${result.user.displayName}!`);
+            setTimeout(() => {
+                window.location.href = 'shop.html';
+            }, 1500);
+        }
+    })
+    .catch((error) => {
+        console.error('Redirect result error:', error);
+        handleGoogleAuthError(error);
+    });
+
+// Helper function to handle Google authentication errors
+function handleGoogleAuthError(error) {
+    console.error('Google sign-in error:', error);
+    let errorMessage = 'Google sign-in failed. Please try again.';
+    
+    switch (error.code) {
+        case 'auth/popup-blocked':
+            errorMessage = 'Popup was blocked by your browser. Please allow popups for this site and try again.';
+            break;
+        case 'auth/popup-closed-by-user':
+            errorMessage = 'Sign-in was cancelled. Please try again.';
+            break;
+        case 'auth/cancelled-popup-request':
+            // User cancelled, no need to show error
+            return;
+        case 'auth/unauthorized-domain':
+            errorMessage = 'This domain is not authorized for Google Sign-In. Please contact support.';
+            break;
+        case 'auth/operation-not-allowed':
+            errorMessage = 'Google Sign-In is not enabled. Please contact support.';
+            break;
+        case 'auth/account-exists-with-different-credential':
+            errorMessage = 'An account already exists with the same email address but different sign-in credentials.';
+            break;
+        case 'auth/network-request-failed':
+            errorMessage = 'Network error. Please check your internet connection and try again.';
+            break;
+        case 'auth/too-many-requests':
+            errorMessage = 'Too many unsuccessful attempts. Please try again later.';
+            break;
+    }
+    
+    window.showNotification(errorMessage, 'error');
+}
+
+// Helper function to disable button and show loading state
+function setButtonLoading(button, isLoading) {
+    if (isLoading) {
+        button.disabled = true;
+        button.dataset.originalText = button.textContent;
+        button.textContent = 'Signing in...';
+        button.style.opacity = '0.7';
+        button.style.cursor = 'not-allowed';
+    } else {
+        button.disabled = false;
+        button.textContent = button.dataset.originalText || 'Google';
+        button.style.opacity = '1';
+        button.style.cursor = 'pointer';
+    }
+}
+
+// Google Sign In with popup and redirect fallback
 const googleBtns = document.querySelectorAll('.google-btn');
 googleBtns.forEach(btn => {
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        
         const provider = new GoogleAuthProvider();
+        // Add custom parameters for better UX
+        provider.addScope('profile');
+        provider.addScope('email');
+        provider.setCustomParameters({
+            prompt: 'select_account'
+        });
+        
+        setButtonLoading(btn, true);
         
         try {
+            // Try popup first
             const result = await signInWithPopup(auth, provider);
             window.showNotification(`Welcome, ${result.user.displayName}!`);
             
@@ -137,8 +216,21 @@ googleBtns.forEach(btn => {
             }, 1500);
             
         } catch (error) {
-            console.error('Google sign-in error:', error);
-            window.showNotification('Google sign-in failed. Please try again.', 'error');
+            setButtonLoading(btn, false);
+            
+            // If popup was blocked, try redirect method
+            if (error.code === 'auth/popup-blocked') {
+                window.showNotification('Popup blocked. Redirecting to Google Sign-In...', 'info');
+                
+                setTimeout(() => {
+                    signInWithRedirect(auth, provider).catch((redirectError) => {
+                        console.error('Redirect error:', redirectError);
+                        handleGoogleAuthError(redirectError);
+                    });
+                }, 1000);
+            } else {
+                handleGoogleAuthError(error);
+            }
         }
     });
 });

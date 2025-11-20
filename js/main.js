@@ -67,17 +67,30 @@ function addToCart(productId, productName, price, image) {
  * Displays a temporary notification message to the user
  * 
  * @param {string} message - The message to display
- * @param {string} type - Notification type: 'success' or 'error' (default: 'success')
+ * @param {string} type - Notification type: 'success', 'error', or 'info' (default: 'success')
  */
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
+    
+    let backgroundColor;
+    switch (type) {
+        case 'error':
+            backgroundColor = '#d32f2f';
+            break;
+        case 'info':
+            backgroundColor = '#1976d2';
+            break;
+        default:
+            backgroundColor = '#2C5F2D';
+    }
+    
     notification.style.cssText = `
         position: fixed;
         top: 100px;
         right: 20px;
-        background: ${type === 'success' ? '#2C5F2D' : '#d32f2f'};
+        background: ${backgroundColor};
         color: white;
         padding: 15px 25px;
         border-radius: 4px;

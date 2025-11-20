@@ -105,9 +105,19 @@ Omoola1/
 
 The site uses Firebase Authentication with:
 - Email/Password registration and login
-- Google Sign-In integration
+- Google Sign-In integration with popup and redirect fallback
+- Comprehensive error handling
 - Password strength validation
 - Secure session management
+
+**⚠️ Important**: To enable Google Sign-In, you must configure Firebase properly. See [FIREBASE_SETUP.md](FIREBASE_SETUP.md) for detailed setup instructions.
+
+### Google Sign-In Features:
+- ✅ Popup-based authentication (primary)
+- ✅ Automatic fallback to redirect method if popup is blocked
+- ✅ User-friendly error messages
+- ✅ Loading states during authentication
+- ✅ Account selection prompt
 
 ## 🛒 Shopping Features
 
