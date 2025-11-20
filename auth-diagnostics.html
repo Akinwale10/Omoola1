@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Auth Diagnostics - Omoola Pharmacy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2C5F2D 0%, #4a8a4c 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #2C5F2D;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #2C5F2D;
+        }
+        
+        .section h2 {
+            color: #2C5F2D;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .status-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .status-label {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .status-value {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary {
+            background: #2C5F2D;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1a3a1b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(44, 95, 45, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .config-display {
+            background: #2d3748;
+            color: #a0aec0;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        
+        .config-key {
+            color: #68d391;
+        }
+        
+        .config-value {
+            color: #fbd38d;
+        }
+        
+        .actions {
+            margin-top: 20px;
+        }
+        
+        .log-container {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 4px;
+            border-radius: 3px;
+        }
+        
+        .log-error {
+            background: rgba(254, 178, 178, 0.1);
+            color: #fc8181;
+        }
+        
+        .log-success {
+            background: rgba(154, 230, 180, 0.1);
+            color: #9ae6b4;
+        }
+        
+        .log-info {
+            background: rgba(144, 205, 244, 0.1);
+            color: #90cdf4;
+        }
+        
+        #authResult {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .result-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .result-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Firebase Authentication Diagnostics</h1>
+        <p class="subtitle">Omoola Pharmacy & Stores - Authentication System Check</p>
+        
+        <!-- Firebase Configuration Status -->
+        <div class="section">
+            <h2>📋 Firebase Configuration</h2>
+            <div class="status-item">
+                <span class="status-label">Firebase SDK</span>
+                <span class="status-value" id="sdkStatus">Checking...</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Authentication Module</span>
+                <span class="status-value" id="authStatus">Checking...</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Project ID</span>
+                <span class="status-value status-info" id="projectId">-</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Auth Domain</span>
+                <span class="status-value status-info" id="authDomain">-</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Current Domain</span>
+                <span class="status-value status-info" id="currentDomain">-</span>
+            </div>
+        </div>
+        
+        <!-- Google Sign-In Status -->
+        <div class="section">
+            <h2>🔍 Google Sign-In Configuration</h2>
+            <div class="status-item">
+                <span class="status-label">Google Auth Provider</span>
+                <span class="status-value" id="googleProviderStatus">Checking...</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Popup Support</span>
+                <span class="status-value" id="popupStatus">Checking...</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Redirect Support</span>
+                <span class="status-value" id="redirectStatus">Checking...</span>
+            </div>
+        </div>
+        
+        <!-- Test Actions -->
+        <div class="section">
+            <h2>🧪 Test Authentication</h2>
+            <div class="actions">
+                <button class="btn btn-primary" id="testGoogleSignIn" disabled>
+                    Test Google Sign-In (Popup)
+                </button>
+                <button class="btn btn-secondary" id="testGoogleRedirect" disabled>
+                    Test Google Sign-In (Redirect)
+                </button>
+                <button class="btn btn-secondary" id="checkAuthState">
+                    Check Auth State
+                </button>
+            </div>
+            <div id="authResult"></div>
+        </div>
+        
+        <!-- Configuration Details -->
+        <div class="section">
+            <h2>⚙️ Configuration Details</h2>
+            <div class="config-display" id="configDisplay">Loading configuration...</div>
+        </div>
+        
+        <!-- Activity Log -->
+        <div class="section">
+            <h2>📝 Activity Log</h2>
+            <div class="log-container" id="logContainer">
+                <div class="log-entry log-info">System initialized. Running diagnostics...</div>
+            </div>
+        </div>
+        
+        <!-- Instructions -->
+        <div class="section">
+            <h2>📖 Setup Instructions</h2>
+            <p style="margin-bottom: 10px;">If tests fail, please ensure:</p>
+            <ol style="margin-left: 20px; line-height: 1.8;">
+                <li>Google Sign-In is enabled in Firebase Console</li>
+                <li>Current domain is added to Authorized Domains</li>
+                <li>OAuth consent screen is configured</li>
+                <li>Browser allows popups for this site</li>
+            </ol>
+            <p style="margin-top: 15px;">
+                <strong>📚 Full setup guide:</strong> 
+                <a href="FIREBASE_SETUP.md" target="_blank" style="color: #2C5F2D; font-weight: 600;">FIREBASE_SETUP.md</a>
+            </p>
+        </div>
+    </div>
+    
+    <script type="module">
+        // Logging utility
+        function log(message, type = 'info') {
+            const logContainer = document.getElementById('logContainer');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            console.log(`[${type.toUpperCase()}]`, message);
+        }
+        
+        // Update status indicator
+        function setStatus(elementId, status, message) {
+            const element = document.getElementById(elementId);
+            element.className = `status-value status-${status}`;
+            element.textContent = message;
+        }
+        
+        // Show auth result
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('authResult');
+            resultDiv.className = `result-${type}`;
+            resultDiv.textContent = message;
+            resultDiv.style.display = 'block';
+        }
+        
+        // Initialize diagnostics
+        async function runDiagnostics() {
+            try {
+                // Check current domain
+                const currentDomain = window.location.hostname;
+                document.getElementById('currentDomain').textContent = currentDomain;
+                log(`Current domain: ${currentDomain}`, 'info');
+                
+                // Load Firebase modules
+                log('Loading Firebase SDK...', 'info');
+                const { auth } = await import('./js/firebase-config.js');
+                setStatus('sdkStatus', 'success', 'Loaded');
+                log('Firebase SDK loaded successfully', 'success');
+                
+                // Display configuration
+                const config = {
+                    projectId: auth.config.projectId,
+                    authDomain: auth.config.authDomain,
+                    apiKey: auth.config.apiKey.substring(0, 10) + '...'
+                };
+                
+                document.getElementById('projectId').textContent = config.projectId;
+                document.getElementById('authDomain').textContent = config.authDomain;
+                
+                document.getElementById('configDisplay').innerHTML = `
+<span class="config-key">projectId:</span> <span class="config-value">"${config.projectId}"</span>
+<span class="config-key">authDomain:</span> <span class="config-value">"${config.authDomain}"</span>
+<span class="config-key">apiKey:</span> <span class="config-value">"${config.apiKey}"</span>
+<span class="config-key">currentDomain:</span> <span class="config-value">"${currentDomain}"</span>
+                `.trim();
+                
+                // Check auth module
+                const { GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged } = 
+                    await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+                setStatus('authStatus', 'success', 'Loaded');
+                log('Firebase Auth module loaded successfully', 'success');
+                
+                // Check Google provider
+                const provider = new GoogleAuthProvider();
+                setStatus('googleProviderStatus', 'success', 'Available');
+                log('GoogleAuthProvider initialized', 'success');
+                
+                // Check popup support
+                setStatus('popupStatus', 'success', 'Supported');
+                log('Popup method is supported', 'success');
+                
+                // Check redirect support
+                setStatus('redirectStatus', 'success', 'Supported');
+                log('Redirect method is supported', 'success');
+                
+                // Enable test buttons
+                document.getElementById('testGoogleSignIn').disabled = false;
+                document.getElementById('testGoogleRedirect').disabled = false;
+                
+                log('All checks passed! Ready to test authentication.', 'success');
+                
+                // Check for redirect result
+                log('Checking for redirect result...', 'info');
+                const result = await getRedirectResult(auth);
+                if (result && result.user) {
+                    log(`User signed in via redirect: ${result.user.email}`, 'success');
+                    showResult(`✅ Signed in as ${result.user.displayName || result.user.email}`, 'success');
+                } else {
+                    log('No redirect result found', 'info');
+                }
+                
+                // Monitor auth state
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        log(`Auth state changed: User logged in (${user.email})`, 'success');
+                    } else {
+                        log('Auth state changed: No user logged in', 'info');
+                    }
+                });
+                
+                // Setup test buttons
+                document.getElementById('testGoogleSignIn').addEventListener('click', async () => {
+                    try {
+                        log('Testing Google Sign-In with popup...', 'info');
+                        const provider = new GoogleAuthProvider();
+                        provider.addScope('profile');
+                        provider.addScope('email');
+                        provider.setCustomParameters({ prompt: 'select_account' });
+                        
+                        const result = await signInWithPopup(auth, provider);
+                        log(`✅ Sign-in successful! User: ${result.user.email}`, 'success');
+                        showResult(`✅ Successfully signed in as ${result.user.displayName || result.user.email}`, 'success');
+                    } catch (error) {
+                        log(`❌ Sign-in failed: ${error.code} - ${error.message}`, 'error');
+                        showResult(`❌ Error: ${error.code} - ${error.message}`, 'error');
+                    }
+                });
+                
+                document.getElementById('testGoogleRedirect').addEventListener('click', async () => {
+                    try {
+                        log('Testing Google Sign-In with redirect...', 'info');
+                        const provider = new GoogleAuthProvider();
+                        provider.addScope('profile');
+                        provider.addScope('email');
+                        provider.setCustomParameters({ prompt: 'select_account' });
+                        
+                        await signInWithRedirect(auth, provider);
+                        log('Redirecting to Google...', 'info');
+                    } catch (error) {
+                        log(`❌ Redirect failed: ${error.code} - ${error.message}`, 'error');
+                        showResult(`❌ Error: ${error.code} - ${error.message}`, 'error');
+                    }
+                });
+                
+                document.getElementById('checkAuthState').addEventListener('click', () => {
+                    const user = auth.currentUser;
+                    if (user) {
+                        log(`Current user: ${user.email} (${user.displayName || 'No display name'})`, 'success');
+                        showResult(`✅ Logged in as ${user.displayName || user.email}`, 'success');
+                    } else {
+                        log('No user is currently logged in', 'info');
+                        showResult('No user is currently logged in', 'error');
+                    }
+                });
+                
+            } catch (error) {
+                log(`❌ Diagnostics failed: ${error.message}`, 'error');
+                setStatus('sdkStatus', 'error', 'Failed');
+                setStatus('authStatus', 'error', 'Failed');
+                setStatus('googleProviderStatus', 'error', 'Failed');
+                setStatus('popupStatus', 'error', 'Unknown');
+                setStatus('redirectStatus', 'error', 'Unknown');
+                
+                document.getElementById('configDisplay').textContent = `Error: ${error.message}`;
+                showResult(`❌ Setup Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Run diagnostics on load
+        runDiagnostics();
+    </script>
+</body>
+</html>
