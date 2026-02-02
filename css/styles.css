@@ -683,13 +683,29 @@ h4 { font-size: 1.25rem; }
     padding: 100px 0;
 }
 
-.testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
+.testimonials-slider-container {
+    overflow: hidden;
+    padding: 20px 0;
+    position: relative;
+    width: 100%;
 }
 
+.testimonials-slider {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    animation: slideLeftToRight 40s linear infinite;
+}
+
+.testimonials-slider:hover {
+    animation-play-state: paused;
+}
+
+
+
+/* Duplicate slider content for seamless loop in JS or CSS */
 .testimonial-card {
+    flex: 0 0 350px; /* Fixed width for slider cards */
     background: white;
     padding: 40px;
     border-radius: 12px;
@@ -698,6 +714,8 @@ h4 { font-size: 1.25rem; }
     backdrop-filter: blur(10px);
     border: 1px solid rgba(107, 31, 168, 0.05);
 }
+
+
 
 .testimonial-card:hover {
     box-shadow: 0 8px 40px rgba(107, 31, 168, 0.15);

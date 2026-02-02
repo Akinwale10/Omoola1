@@ -226,6 +226,32 @@ document.addEventListener('DOMContentLoaded', () => {
         
         lastScroll = currentScroll;
     });
+
+    // Testimonial Slider Loop Logic
+    const slider = document.querySelector('.testimonials-slider');
+    if (slider) {
+        // Clone the testimonials for seamless infinite scroll
+        const cards = Array.from(slider.children);
+        cards.forEach(card => {
+            const clone = card.cloneNode(true);
+            slider.appendChild(clone);
+        });
+
+        // Update animation duration based on total width
+        const totalWidth = slider.scrollWidth / 2;
+        const duration = totalWidth / 50; // Adjust speed (pixels per second)
+        slider.style.animationDuration = `${duration}s`;
+        
+        // Dynamic keyframes for seamless loop
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes slideLeftToRight {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-${totalWidth}px); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    }
 });
 
 /**
