@@ -177,8 +177,32 @@ function proceedToCheckout() {
     }
     
     // In a real application, this would redirect to checkout page
-    window.showNotification('Checkout functionality coming soon!');
-    // window.location.href = 'checkout.html';
+    const phoneNumber = "2348117276772"; // WhatsApp number
+    let message = "Hello Omoola Pharmacy, I'd like to place an order:\n\n";
+
+    cart.forEach((item, index) => {
+        message += `${index + 1}. ${item.name} - ${item.quantity} x ₦${item.price.toFixed(2)}\n`;
+    });
+
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const shipping = subtotal > 50 ? 0 : 5.99;
+    const total = subtotal + shipping;
+
+    message += `\nSubtotal: ₦${subtotal.toFixed(2)}\n`;
+    message += `Shipping: ${shipping === 0 ? 'FREE' : '₦' + shipping.toFixed(2)}\n`;
+    message += `Total: ₦${total.toFixed(2)}\n\n`;
+    message += "Please confirm my order and delivery details.";
+
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+
+    // Optionally clear the cart after sending to WhatsApp
+    // window.cart = [];
+    // localStorage.setItem('omoola_cart', JSON.stringify(window.cart));
+    // window.updateCartCount();
+    // renderCart();
+
+    window.showNotification('Redirecting to WhatsApp for checkout!');
 }
 
 /**
