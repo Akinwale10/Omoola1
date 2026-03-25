@@ -907,3 +907,125 @@
         padding: 0;
     }
 }
+
+
+/* ============================================
+   Media Management Styles
+   ============================================ */
+
+.media-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.media-tab-btn {
+    padding: 15px 25px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #999;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.3s ease;
+}
+
+.media-tab-btn:hover {
+    color: #6B1FA8;
+}
+
+.media-tab-btn.active {
+    color: #6B1FA8;
+    border-bottom-color: #6B1FA8;
+}
+
+.media-tab-content {
+    display: none;
+}
+
+.media-tab-content.active {
+    display: block;
+}
+
+.media-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.media-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.media-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #6B1FA8;
+}
+
+.media-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.media-card-content {
+    padding: 15px;
+}
+
+.media-card-content p {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.media-card-content small {
+    display: block;
+    margin-top: 8px;
+    color: #999;
+    font-size: 12px;
+}
+
+/* Responsive Media Gallery */
+@media (max-width: 768px) {
+    .media-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .media-tab-btn {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .media-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .media-tabs {
+        flex-direction: column;
+        margin-bottom: 20px;
+        border-bottom: none;
+    }
+
+    .media-tab-btn {
+        padding: 12px;
+        border-bottom: 3px solid transparent;
+        border-left: 3px solid transparent;
+        margin-bottom: 0;
+    }
+
+    .media-tab-btn.active {
+        border-bottom: none;
+        border-left-color: #6B1FA8;
+    }
+}

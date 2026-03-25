@@ -282,117 +282,6 @@
                 </div>
             </section>
 
-            <!-- Media Management Section -->
-            <section id="media" class="admin-section">
-                <h2 style="margin-bottom: 30px; color: #6B1FA8;">Media Management</h2>
-                
-                <!-- Tabs for Hero and Featured Products -->
-                <div class="media-tabs" style="display: flex; gap: 0; margin-bottom: 30px; border-bottom: 2px solid #e0e0e0;">
-                    <button class="media-tab-btn active" data-tab="hero" style="padding: 15px 25px; background: none; border: none; cursor: pointer; font-size: 1rem; font-weight: 600; color: #6B1FA8; border-bottom: 3px solid #6B1FA8; margin-bottom: -2px;">
-                        Hero Slider Images
-                    </button>
-                    <button class="media-tab-btn" data-tab="featured" style="padding: 15px 25px; background: none; border: none; cursor: pointer; font-size: 1rem; font-weight: 600; color: #999; border-bottom: 3px solid transparent; margin-bottom: -2px;">
-                        Featured Products Images
-                    </button>
-                </div>
-                
-                <!-- Hero Images Tab -->
-                <div id="hero-tab" class="media-tab-content active">
-                    <div class="product-form-container" style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 40px;">
-                        <h3 style="margin-bottom: 20px; color: #2C2C2C;">Upload Hero Slider Image</h3>
-                        <form id="heroImageForm">
-                            <div class="form-group" style="margin-bottom: 20px;">
-                                <label for="heroImageInput" style="display: block; margin-bottom: 8px; color: #2C2C2C; font-weight: 500;">Select Image *</label>
-                                <input type="file" id="heroImageInput" accept="image/*" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
-                                <small style="display: block; margin-top: 8px; color: #999;">Recommended size: 1920x600px. Max file size: 5MB</small>
-                            </div>
-                            
-                            <div class="form-group" style="margin-bottom: 20px;">
-                                <label for="heroImageAlt" style="display: block; margin-bottom: 8px; color: #2C2C2C; font-weight: 500;">Alt Text (for accessibility) *</label>
-                                <input type="text" id="heroImageAlt" required placeholder="e.g., Omoola Pharmacy Storefront" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
-                            </div>
-                            
-                            <div style="display: flex; gap: 10px;">
-                                <button type="submit" class="btn btn-primary" style="padding: 12px 30px;">
-                                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
-                                        <path d="M10 4v12M4 10h12"/>
-                                    </svg>
-                                    Upload Image
-                                </button>
-                            </div>
-                        </form>
-                        
-                        <div id="heroUploadSuccess" style="display: none; margin-top: 20px; padding: 15px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
-                            Image uploaded successfully!
-                        </div>
-                    </div>
-                    
-                    <!-- Hero Images Gallery -->
-                    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                        <h3 style="margin-bottom: 20px; color: #2C2C2C;">Current Hero Slider Images</h3>
-                        <div id="heroImagesGallery" class="media-gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
-                            <!-- Hero images will be loaded here -->
-                        </div>
-                        <div id="heroEmptyState" style="text-align: center; padding: 40px; color: #999;">
-                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin: 0 auto 15px; opacity: 0.5;">
-                                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <path d="M3 15l5-5 6 6 8-8v10"/>
-                            </svg>
-                            <p>No hero images uploaded yet. Upload your first image above.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Featured Products Images Tab -->
-                <div id="featured-tab" class="media-tab-content" style="display: none;">
-                    <div class="product-form-container" style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 40px;">
-                        <h3 style="margin-bottom: 20px; color: #2C2C2C;">Upload Featured Product Image</h3>
-                        <form id="featuredImageForm">
-                            <div class="form-group" style="margin-bottom: 20px;">
-                                <label for="featuredProductName" style="display: block; margin-bottom: 8px; color: #2C2C2C; font-weight: 500;">Product Name *</label>
-                                <input type="text" id="featuredProductName" required placeholder="e.g., Herbal Vitamin C" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
-                            </div>
-                            
-                            <div class="form-group" style="margin-bottom: 20px;">
-                                <label for="featuredImageInput" style="display: block; margin-bottom: 8px; color: #2C2C2C; font-weight: 500;">Select Image *</label>
-                                <input type="file" id="featuredImageInput" accept="image/*" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
-                                <small style="display: block; margin-top: 8px; color: #999;">Recommended size: 400x400px. Max file size: 5MB</small>
-                            </div>
-                            
-                            <div style="display: flex; gap: 10px;">
-                                <button type="submit" class="btn btn-primary" style="padding: 12px 30px;">
-                                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
-                                        <path d="M10 4v12M4 10h12"/>
-                                    </svg>
-                                    Upload Image
-                                </button>
-                            </div>
-                        </form>
-                        
-                        <div id="featuredUploadSuccess" style="display: none; margin-top: 20px; padding: 15px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
-                            Image uploaded successfully!
-                        </div>
-                    </div>
-                    
-                    <!-- Featured Images Gallery -->
-                    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                        <h3 style="margin-bottom: 20px; color: #2C2C2C;">Current Featured Products Images</h3>
-                        <div id="featuredImagesGallery" class="media-gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
-                            <!-- Featured product images will be loaded here -->
-                        </div>
-                        <div id="featuredEmptyState" style="text-align: center; padding: 40px; color: #999;">
-                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin: 0 auto 15px; opacity: 0.5;">
-                                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <path d="M3 15l5-5 6 6 8-8v10"/>
-                            </svg>
-                            <p>No featured product images uploaded yet. Upload your first image above.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- Products Section - Default view after admin login -->
             <section id="products" class="admin-section active">
                 <h2 style="margin-bottom: 30px; color: #6B1FA8;">Product Management</h2>
@@ -658,6 +547,5 @@
     <script type="module" src="js/firebase-config.js"></script>
     <script src="js/main.js"></script>
     <script src="js/admin.js"></script>
-    <script src="js/media-management.js"></script>
 </body>
 </html>
