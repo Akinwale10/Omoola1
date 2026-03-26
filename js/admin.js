@@ -107,18 +107,32 @@ if (productUploadForm) {
         const productStock = document.getElementById('productStock').value;
         const productImageInput = document.getElementById('productImage');
         
-        // Handle image upload (for now, use placeholder or convert to base64)
+        // Handle image upload
         let imageUrl = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=50&h=50&fit=crop';
         
         if (productImageInput.files && productImageInput.files[0]) {
-            // In production, upload to Firebase Storage or Cloudinary
-            // For demo, use a placeholder based on category
-            if (productCategory === 'Medicine') {
+            try {
+                // Use the helper function from media-management.js if available, 
+                // or define a local version if not.
+                const file = productImageInput.files[0];
+                const reader = new FileReader();
+                imageUrl = await new Promise((resolve) => {
+                    reader.onload = () => resolve(reader.result);
+                    reader.readAsDataURL(file);
+                });
+            } catch (err) {
+                console.error('Error reading image file:', err);
+            }
+        } else {
+            // Fallback placeholders based on category
+            if (productCategory === 'medicines') {
                 imageUrl = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=50&h=50&fit=crop';
-            } else if (productCategory === 'Health Supplies') {
+            } else if (productCategory === 'supplements') {
                 imageUrl = 'https://images.unsplash.com/photo-1550572017-4781e5e8e9c7?w=50&h=50&fit=crop';
-            } else if (productCategory === 'Groceries') {
+            } else if (productCategory === 'groceries') {
                 imageUrl = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=50&h=50&fit=crop';
+            } else if (productCategory === 'personal-care') {
+                imageUrl = 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=50&h=50&fit=crop';
             }
         }
         

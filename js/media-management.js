@@ -99,7 +99,7 @@ async function uploadHeroImage(file, altText) {
 }
 
 // Upload featured product image
-async function uploadFeaturedImage(file, productName) {
+async function uploadFeaturedImage(file, productName, price, description) {
     try {
         const base64 = await fileToBase64(file);
         const mediaData = getMediaData();
@@ -107,6 +107,8 @@ async function uploadFeaturedImage(file, productName) {
         const newImage = {
             id: 'featured-' + Date.now(),
             name: productName,
+            price: price,
+            description: description,
             src: base64,
             alt: productName,
             isDefault: false,
@@ -238,7 +240,13 @@ function renderFeaturedImagesGallery() {
                 <p style="margin: 0 0 5px 0; font-size: 14px; color: #333; font-weight: 600;">
                     ${image.name}
                 </p>
-                <p style="margin: 0 0 10px 0; font-size: 12px; color: #999;">
+                <p style="margin: 0 0 5px 0; font-size: 13px; color: #6B1FA8; font-weight: 700;">
+                    ₦${image.price ? image.price.toFixed(2) : '0.00'}
+                </p>
+                <p style="margin: 0 0 10px 0; font-size: 12px; color: #666;">
+                    ${image.description || ''}
+                </p>
+                <p style="margin: 0 0 10px 0; font-size: 11px; color: #999;">
                     Uploaded: ${new Date(image.uploadedAt).toLocaleDateString()}
                 </p>
                 <div style="display: flex; gap: 8px;">
@@ -345,36 +353,43 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Featured product image form submission
-    const featuredForm = document.getElementById('featuredImageForm');
-    if (featuredForm) {
-        featuredForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const fileInput = document.getElementById('featuredImageInput');
-            const productNameInput = document.getElementById('featuredProductName');
-            
-            if (!fileInput.files || fileInput.files.length === 0) {
-                window.showNotification('Please select an image', 'error');
-                return;
-            }
-            
-            try {
-                const file = fileInput.files[0];
-                
-                // Validate file size (5MB max)
-                if (file.size > 5 * 1024 * 1024) {
-                    window.showNotification('File size must be less than 5MB', 'error');
-                    return;
-                }
-                
-                // Validate file type
-                if (!file.type.startsWith('image/')) {
-                    window.showNotification('Please select a valid image file', 'error');
-                    return;
-                }
-                
-                await uploadFeaturedImage(file, productNameInput.value);
+	    // Featured product image form submission
+	    const featuredForm = document.getElementById('featuredImageForm');
+	    if (featuredForm) {
+	        featuredForm.addEventListener('submit', async (e) => {
+	            e.preventDefault();
+	            
+	            const fileInput = document.getElementById('featuredImageInput');
+	            const productNameInput = document.getElementById('featuredProductName');
+	            const productPriceInput = document.getElementById('featuredProductPrice');
+	            const productDescInput = document.getElementById('featuredProductDesc');
+	            
+	            if (!fileInput.files || fileInput.files.length === 0) {
+	                window.showNotification('Please select an image', 'error');
+	                return;
+	            }
+	            
+	            try {
+	                const file = fileInput.files[0];
+	                
+	                // Validate file size (5MB max)
+	                if (file.size > 5 * 1024 * 1024) {
+	                    window.showNotification('File size must be less than 5MB', 'error');
+	                    return;
+	                }
+	                
+	                // Validate file type
+	                if (!file.type.startsWith('image/')) {
+	                    window.showNotification('Please select a valid image file', 'error');
+	                    return;
+	                }
+	                
+	                await uploadFeaturedImage(
+	                    file, 
+	                    productNameInput.value, 
+	                    parseFloat(productPriceInput.value), 
+	                    productDescInput.value
+	                );
                 
                 // Show success message
                 const successMsg = document.getElementById('featuredUploadSuccess');

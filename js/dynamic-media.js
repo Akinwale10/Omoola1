@@ -35,9 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     const productCard = document.createElement('div');
                     productCard.className = 'product-card';
                     
-                    // Use a placeholder price and description since we only manage images here
-                    const price = product.isDefault ? (index === 0 ? '₦12.99' : index === 1 ? '₦24.99' : '₦6.99') : '₦0.00';
-                    const desc = product.isDefault ? (index === 0 ? '1000mg, 60 capsules' : index === 1 ? 'Complete home care set' : 'Antibacterial protection') : 'New Product';
+                    // Use the saved price and description, or defaults for original products
+                    let price = '₦0.00';
+                    let desc = 'New Product';
+                    
+                    if (product.isDefault) {
+                        price = (index === 0 ? '₦12.99' : index === 1 ? '₦24.99' : '₦6.99');
+                        desc = (index === 0 ? '1000mg, 60 capsules' : index === 1 ? 'Complete home care set' : 'Antibacterial protection');
+                    } else {
+                        if (product.price) price = `₦${parseFloat(product.price).toFixed(2)}`;
+                        if (product.description) desc = product.description;
+                    }
                     
                     productCard.innerHTML = `
                         <div class="product-image">

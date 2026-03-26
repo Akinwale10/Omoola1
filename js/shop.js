@@ -220,7 +220,22 @@ const products = [
     }
 ];
 
-let filteredProducts = [...products];
+// Load admin products from localStorage
+const adminProducts = JSON.parse(localStorage.getItem('adminProducts') || '[]');
+// Map admin products to shop product structure
+const mappedAdminProducts = adminProducts.map(p => ({
+    id: p.id,
+    name: p.name,
+    description: p.description,
+    price: parseFloat(p.price),
+    category: p.category,
+    image: p.imageUrl,
+    inStock: p.stock > 0
+}));
+
+// Combine hardcoded products with admin products
+const allProducts = [...products, ...mappedAdminProducts];
+let filteredProducts = [...allProducts];
 
 // DOM Elements
 const productsGrid = document.getElementById('productsGrid');
@@ -267,7 +282,7 @@ function renderProducts(productsToRender) {
 
 // Filter products
 function filterProducts() {
-    let filtered = [...products];
+    let filtered = [...allProducts];
 
     // Search filter
     const searchTerm = searchInput.value.toLowerCase().trim();
@@ -332,7 +347,7 @@ function attachCartListeners() {
     addToCartButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             const productId = parseInt(e.target.dataset.productId);
-            const product = products.find(p => p.id === productId);
+            const product = allProducts.find(p => p.id === productId);
             
             if (product && product.inStock) {
                 window.addToCart(productId, product.name, product.price, product.image);
