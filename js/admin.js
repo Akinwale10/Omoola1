@@ -105,6 +105,7 @@ if (productUploadForm) {
         const productDescription = document.getElementById('productDescription').value;
         const productPrice = document.getElementById('productPrice').value;
         const productStock = document.getElementById('productStock').value;
+        const productFeatured = document.getElementById('productFeatured').checked;
         const productImageInput = document.getElementById('productImage');
         
         // Handle image upload
@@ -144,6 +145,7 @@ if (productUploadForm) {
             description: productDescription,
             price: parseFloat(productPrice).toFixed(2),
             stock: parseInt(productStock),
+            featured: productFeatured,
             imageUrl: imageUrl,
             status: 'Active',
             createdAt: new Date().toISOString()

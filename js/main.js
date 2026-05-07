@@ -211,6 +211,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
+    // Load featured products from localStorage
+    const featuredProductsGrid = document.getElementById('featuredProductsGrid');
+    if (featuredProductsGrid) {
+        const adminProducts = JSON.parse(localStorage.getItem('adminProducts') || '[]');
+        const featuredProducts = adminProducts.filter(p => p.featured === true);
+        
+        if (featuredProducts.length > 0) {
+            // Keep the hardcoded ones but prepend the new ones
+            const currentContent = featuredProductsGrid.innerHTML;
+            const newFeaturedHtml = featuredProducts.map(product => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${product.imageUrl}" alt="${product.name}" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-desc">${product.description}</p>
+                        <div class="product-footer">
+                            <span class="price">₦${parseFloat(product.price).toFixed(2)}</span>
+                            <button class="btn btn-secondary btn-add-cart" data-product-id="${product.id}">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            featuredProductsGrid.innerHTML = newFeaturedHtml + currentContent;
+            
+            // Re-attach event listeners to new add to cart buttons
+            const newButtons = featuredProductsGrid.querySelectorAll('.btn-add-cart');
+            newButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productCard = e.target.closest('.product-card');
+                    const productId = e.target.dataset.productId;
+                    const productName = productCard.querySelector('h3').textContent;
+                    const priceText = productCard.querySelector('.price').textContent;
+                    const price = parseFloat(priceText.replace('₦', ''));
+                    const image = productCard.querySelector('img').src;
+                    
+                    addToCart(productId, productName, price, image);
+                });
+            });
+        }
+    }
+
     // Navbar scroll effect - adds shadow when scrolling
     let lastScroll = 0;
     const navbar = document.querySelector('.navbar');
