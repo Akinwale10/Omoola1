@@ -234,7 +234,39 @@ function attachProductActionListeners(row) {
 
 // Load existing products from localStorage on page load
 function loadProducts() {
-    const products = JSON.parse(localStorage.getItem('adminProducts') || '[]');
+    let products = JSON.parse(localStorage.getItem('adminProducts'));
+    
+    // If no products in localStorage, initialize with defaults
+    if (!products) {
+        products = [
+            {
+                id: 1,
+                name: 'Paracetamol 500mg',
+                category: 'medicines',
+                description: 'Pack of 24 tablets',
+                price: '4.99',
+                stock: 245,
+                featured: true,
+                imageUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=50&h=50&fit=crop',
+                status: 'Active',
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 2,
+                name: 'Herbal Vitamin C',
+                category: 'supplements',
+                description: '1000mg, 60 capsules',
+                price: '12.99',
+                stock: 180,
+                featured: true,
+                imageUrl: 'https://images.unsplash.com/photo-1550572017-4781e5e8e9c7?w=50&h=50&fit=crop',
+                status: 'Active',
+                createdAt: new Date().toISOString()
+            }
+        ];
+        localStorage.setItem('adminProducts', JSON.stringify(products));
+    }
+    
     products.forEach(product => {
         addProductToTable(product);
     });
@@ -324,7 +356,7 @@ filterSelects.forEach(select => {
 });
 
 // Action button handlers (demo) for existing buttons
-document.querySelectorAll('.action-btn:not(.edit-btn):not(.delete-btn)').forEach(btn => {
+document.querySelectorAll('.admin-section:not(#products) .action-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const action = btn.textContent.trim();
         window.showNotification(`${action} functionality coming soon!`);
